@@ -1,0 +1,5 @@
+SELECT ?KE ?KEName ?KEID ?KEDescription
+WHERE {
+ ?KE a aopo:KeyEvent ;
+ dc:title ?KEName ; rdfs:label ?KEID ; dc:description ?KEDescription.
+}

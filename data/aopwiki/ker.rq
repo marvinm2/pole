@@ -1,0 +1,6 @@
+SELECT ?KEupID ?KEdownID
+WHERE {
+ ?KER a aopo:KeyEventRelationship ; aopo:has_upstream_key_event ?KEup ; aopo:has_downstream_key_event ?KEdown .
+  ?KEup rdfs:label ?KEupID .
+  ?KEdown rdfs:label ?KEdownID .
+}

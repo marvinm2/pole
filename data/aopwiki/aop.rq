@@ -1,0 +1,7 @@
+SELECT ?AOP ?AOPName ?AOPID ?MIE ?AO ?AOPKE ?AOPcreator ?AOPStressor ?AOPDescription ?AOPsource
+WHERE {
+ ?AOP a aopo:AdverseOutcomePathway ;
+ dc:title ?AOPName ; rdfs:label ?AOPID ; aopo:has_molecular_initiating_event ?MIE ; aopo:has_adverse_outcome ?AO ; aopo:has_key_event ?AOPKE ; dc:creator ?AOPcreator ;  dc:source ?AOPsource.
+OPTIONAL{?AOP nci:C54571 ?AOPStressor}
+OPTIONAL{?AOP dc:description ?AOPDescription }
+}
