@@ -104,7 +104,7 @@ experimental condition:
 case study related organ:
   is_a: association
   represented_as: edge
-  source: CaseStudy
+  source: case study
   target: organ
   input_label: case_study_related_organ
 
@@ -112,77 +112,77 @@ AOP includes mie: # Links to MIE node
   is_a: association
   represented_as: edge
   source: AOP
-  target: KeyEvent
+  target: key event
   input_label: AOP_includes_mie
 
 AOP includes ao: # Links to AO node
   is_a: association
   represented_as: edge
   source: AOP
-  target: KeyEvent
+  target: key event
   input_label: AOP_includes_ao
 
 AOP includes key event: # Links to AOPKE (Key Event) node
   is_a: association
   represented_as: edge
   source: AOP
-  target: KeyEvent # Assumes AOPKE points to a KeyEvent node
+  target: key event # Assumes AOPKE points to a KeyEvent node
   input_label: AOP_includes_key_event
 
 AOP relevant stressor: # Links to AOPStressor (stressor node)
   is_a: association
   represented_as: edge
   source: AOP
-  target: Stressor # Assumes AOPStressor points to a Stressor node
+  target: stressor # Assumes AOPStressor points to a Stressor node
   input_label: AOP_relevant_stressor
 
 chemical measured with bioassay:
   is_a: association
   represented_as: edge
-  source: Chemical
-  target: Bioassay
+  source: chemical
+  target: bioassay
   input_label: chemical_measured_with_bioassay
 
 bioassay executed on model system:
   is_a: association
   represented_as: edge
-  source: Bioassay
-  target: Model_system
+  source: bioassay
+  target: model system
   input_label: bioassay_executed_on_model_system
 
 case study relevant chemical:
   is_a: association
   represented_as: edge
-  source: CaseStudy
-  target: Chemical
+  source: case study
+  target: chemical
   input_label: case_study_relevant_chemical
 
 case study relevant model system:
   is_a: association
   represented_as: edge
-  source: CaseStudy
-  target: Model_system
+  source: case study
+  target: model system
   input_label: case_study_relevant_model_system
 
 case study relevant computational model:
   is_a: association
   represented_as: edge
-  source: CaseStudy
-  target: Computational_model
+  source: case study
+  target: computational model
   input_label: case_study_relevant_computational_model
 
 chemical measured in model system:
   is_a: association
   represented_as: edge
-  source: Chemical
-  target: Model_system
+  source: chemical
+  target: model system
   input_label: chemical_measured_in_model_system
 
 chemical relevant to computational model:
   is_a: association
   represented_as: edge
-  source: Chemical
-  target: Computational_model
+  source: chemical
+  target: computational model
   input_label: chemical_relevant_to_computational_model
 
 bioassay related organ:
@@ -195,22 +195,22 @@ bioassay related organ:
 model system relevant to organ:
   is_a: association
   represented_as: edge
-  source: Model_system
+  source: model system
   target: organ
   input_label: model_system_relevant_to_organ
 
 computational model relevant to organ:
   is_a: association
   represented_as: edge
-  source: Computational_model
+  source: computational model
   target: organ
   input_label: computational_model_relevant_to_organ
 
 case study relevant endpoint:
   is_a: association
   represented_as: edge
-  source: CaseStudy
-  target: Measurable_endpoint
+  source: case study
+  target: measurable endpoint
   input_label: case_study_relevant_endpoint
 
 bioassay used with experimental condition:
@@ -223,6 +223,6 @@ bioassay used with experimental condition:
 chemical to web page association:
   is_a: association
   represented_as: edge
-  source: Chemical
+  source: chemical
   target: web page
   input_label: chemical_webpage
