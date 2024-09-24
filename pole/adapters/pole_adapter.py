@@ -97,6 +97,9 @@ class CustomAdapterEdgeType(Enum):
     computational_model_relevant_to_organ = "computational_model_relevant_to_organ"
     case_study_relevant_endpoint = "case_study_relevant_endpoint"
     bioassay_used_with_experimental_condition = "bioassay_used_with_experimental_condition"
+    case_study_related_ke = "case_study_related_ke"
+    case_study_related_aop = "case_study_related_aop"
+
 class CustomAdapter:
     """
     Adapter for creating a knowledge graph

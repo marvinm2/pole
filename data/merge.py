@@ -77,6 +77,9 @@ def create_edges(case_study_df, chemical_df, bioassay_df, model_system_df, compu
     # Create edges for related AOPs
     case_study_aop_edges = split_and_create_edges(case_study_df, 'related_aop', 'case_study_related_aop')
 
+    # Create edges for related KEs
+    case_study_ke_edges = split_and_create_edges(case_study_df, 'related_ke', 'case_study_related_ke')
+
     # Create edges for related chemicals
     case_study_chemical_edges = split_and_create_edges(case_study_df, 'related_chemical', 'case_study_relevant_chemical')
 
@@ -115,7 +118,7 @@ def create_edges(case_study_df, chemical_df, bioassay_df, model_system_df, compu
 
     # Combine all edges into one DataFrame
     edges = pd.concat([
-        organ_edges, case_study_aop_edges, case_study_chemical_edges, model_system_edges, computational_model_edges, 
+        organ_edges, case_study_aop_edges, case_study_ke_edges, case_study_chemical_edges, model_system_edges, computational_model_edges, 
         chemical_bioassay_edges, bioassay_model_system_edges, bioassay_organ_edges, 
         chemical_computational_model_edges, chemical_model_system_edges, model_system_organ_edges, 
         computational_model_organ_edges, case_study_endpoint_edges, bioassay_condition_edges
