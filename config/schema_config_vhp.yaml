@@ -171,6 +171,20 @@ case study relevant computational model:
   target: computational model
   input_label: case_study_relevant_computational_model
 
+case study relevant aop:
+  is_a: association
+  represented_as: edge
+  source: case study
+  target: AOP
+  input_label: case_study_related_aop
+
+case study relevant key event:
+  is_a: association
+  represented_as: edge
+  source: case study
+  target: key event
+  input_label: case_study_related_ke
+
 chemical measured in model system:
   is_a: association
   represented_as: edge
@@ -226,3 +240,10 @@ chemical to web page association:
   source: chemical
   target: web page
   input_label: chemical_webpage
+
+key event relationship:
+  is_a: association
+  represented_as: edge
+  source: key event
+  target: key event
+  input_label: key_event_relationship

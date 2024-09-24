@@ -41,6 +41,7 @@ class CustomAdapterEdgeType(Enum):
     AOP_INCLUDES_AO = "AOP_includes_ao"
     AOP_INCLUDES_KEY_EVENT = "AOP_includes_key_event"
     AOP_RELEVANT_STRESSOR = "AOP_relevant_stressor"
+    KEY_EVENT_RELATIONSHIP = "key_event_relationship"  # New edge type
 
 
 class CustomAOPAdapter:
@@ -48,14 +49,17 @@ class CustomAOPAdapter:
     Adapter for creating a knowledge graph
     """
 
-    def __init__(self, aop_file: str, ke_file: str):
+    def __init__(self, aop_file: str, ke_file: str, ke_relationship_file: str):
         """
-        Initialize with two input files: AOP file and KE file.
+        Initialize with three input files: AOP file, KE file, and Key Event Relationship file.
         """
-        self.aop_file = aop_file  # Store AOP file path
-        self.ke_file = ke_file    # Store KE file path
+        self.aop_file = aop_file         # Store AOP file path
+        self.ke_file = ke_file           # Store KE file path
+        self.ke_relationship_file = ke_relationship_file  # Store KE relationship file path
+        
         self._node_data, self._edge_data = self._read_and_format_aop_csv()  # Read AOP data
         self._ke_data = self._read_ke_csv()  # Read KE data
+        self._ke_relationship_data = self._read_ke_relationship_csv()  # Read Key Event Relationship data
 
         # Check if '_labels' column exists, if not, assume a default label
         if '_labels' not in self._node_data.columns:
@@ -81,10 +85,22 @@ class CustomAOPAdapter:
         # Return the KE data
         return ke_data
 
+    def _read_ke_relationship_csv(self):
+        """
+        Read Key Event Relationship (KEupID -> KEdownID) data from the Key Event Relationship CSV file.
+        """
+        logger.info(f"Reading Key Event Relationship data from {self.ke_relationship_file}.")
+        ke_relationship_data = pd.read_csv(self.ke_relationship_file, dtype=str)
+
+        # Ensure the necessary columns exist in the Key Event Relationship data
+        if 'KEupID' not in ke_relationship_data.columns or 'KEdownID' not in ke_relationship_data.columns:
+            raise ValueError("Key Event Relationship file must contain 'KEupID' and 'KEdownID' columns.")
+        
+        return ke_relationship_data
 
     def _read_and_format_aop_csv(self):
         """
-        Read and format data from CSV file, adding edges and cleaning types.
+        Read and format data from the AOP CSV file, adding edges and cleaning types.
         """
         logger.info(f"Reading and formatting data from {self.aop_file}.")
 
@@ -166,10 +182,11 @@ class CustomAOPAdapter:
     def get_edges(self):
         """
         Returns a generator of edge tuples for edge types specified in the
-        adapter constructor.
+        adapter constructor, including the Key Event Relationship edges.
         """
         logger.info("Generating edges.")
 
+        # First, yield AOP-related edges
         for index, row in self._edge_data.iterrows():
             _id = None  # Edge ID can be auto-generated or skipped
             _start = row["_start"]
@@ -178,5 +195,16 @@ class CustomAOPAdapter:
             _props = {}
 
             #logger.info(f"Yielding edge: Start={_start}, End={_end}, Type={_type}, Properties={_props}")
+            yield (_id, _start, _end, _type, _props)
+
+        # Then, yield the Key Event Relationship edges
+        for index, row in self._ke_relationship_data.iterrows():
+            _id = None  # Edge ID can be auto-generated or skipped
+            _start = row["KEupID"]
+            _end = row["KEdownID"]
+            _type = "key_event_relationship"
+            _props = {}
+
+            #logger.info(f"Yielding Key Event Relationship edge: Start={_start}, End={_end}, Type={_type}")
             yield (_id, _start, _end, _type, _props)
 

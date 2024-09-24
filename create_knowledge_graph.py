@@ -16,7 +16,7 @@ adapter = CustomAdapter()
 bc.write_nodes(adapter.get_nodes())
 bc.write_edges(adapter.get_edges())
 
-adapter = CustomAOPAdapter("data/AOP-Wiki-AOP.csv", "data/AOP-Wiki-KE.csv")
+adapter = CustomAOPAdapter("data/AOP-Wiki-AOP.csv", "data/AOP-Wiki-KE.csv", "data/KERs.csv")
 bc.write_nodes(adapter.get_nodes())
 bc.write_edges(adapter.get_edges())
 
