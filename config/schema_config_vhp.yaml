@@ -36,7 +36,7 @@ AOP:
 
 key event:
   represented_as: node
-  input_label: :KeyEvent # This defines how the node will be labeled in your graph
+  input_label: :KeyEvent
   is_a: named thing
   properties:
     name: str # Represents the name of the key event
