@@ -68,7 +68,7 @@ class CompoundWikiAdapter:
                 _props['SMILES'] = row.get('SMILES', None)
                 _props['InChIKey'] = row.get('InChIKey', None)
 
-            logger.info(f"Yielding node: ID={_id}, Type={_type}, Properties={_props}")
+            #logger.info(f"Yielding node: ID={_id}, Type={_type}, Properties={_props}")
             node_count += 1
             yield (_id, _type, _props)
 
@@ -85,7 +85,7 @@ class CompoundWikiAdapter:
             if _type == ':WebPage':
                 _props['URL'] = _id
 
-            logger.info(f"Yielding node: ID={_id}, Type={_type}, Properties={_props}")
+            #logger.info(f"Yielding node: ID={_id}, Type={_type}, Properties={_props}")
             node_count += 1
             yield (_id, _type, _props)
 

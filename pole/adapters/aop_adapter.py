@@ -148,7 +148,7 @@ class CustomAOPAdapter:
                 #'description': row.get('AOPDescription', None),
                 'source': row.get('AOPsource', None)
             }
-            logger.info(f"Yielding AOP node: ID={_id}, Type={_type}, Properties={_props}")
+            #logger.info(f"Yielding AOP node: ID={_id}, Type={_type}, Properties={_props}")
             yield (_id, _type, _props)
 
         # Then, yield the KE nodes
@@ -159,7 +159,7 @@ class CustomAOPAdapter:
                 'name': row.get('KEName', None),
                 #'description': row.get('KEDescription', None)
             }
-            logger.info(f"Yielding KE node: ID={_id}, Type={_type}, Properties={_props}")
+            #logger.info(f"Yielding KE node: ID={_id}, Type={_type}, Properties={_props}")
             yield (_id, _type, _props)
 
 

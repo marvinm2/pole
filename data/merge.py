@@ -57,7 +57,7 @@ def create_edges(case_study_df, chemical_df, bioassay_df, model_system_df, compu
         'BioassayName', 'Measured', '_start', '_end', '_type'
     ])
 
-    def split_and_create_edges(df, column_name, edge_type):
+    def split_and_create_edges(df, column_name, edge_type, start_column="_id"):
         """Helper function to split comma-separated values and create new edges"""
         expanded_edges = []
         for idx, row in df.iterrows():
@@ -66,58 +66,63 @@ def create_edges(case_study_df, chemical_df, bioassay_df, model_system_df, compu
                 for value in values:
                     new_edge = row.copy()
                     new_edge['_end'] = value.strip()  # Clean up extra spaces
+                    new_edge['_start'] = row[start_column]  # Use the _id as the _start for the edge
                     new_edge['_type'] = edge_type
                     expanded_edges.append(new_edge)
         return pd.DataFrame(expanded_edges)
 
     # Create edges for related organs
-    organ_edges = split_and_create_edges(case_study_df[['related_organ', '_id']], 'related_organ', 'case_study_related_organ')
+    organ_edges = split_and_create_edges(case_study_df, 'related_organ', 'case_study_related_organ')
+
+    # Create edges for related AOPs
+    case_study_aop_edges = split_and_create_edges(case_study_df, 'related_aop', 'case_study_related_aop')
 
     # Create edges for related chemicals
-    case_study_chemical_edges = split_and_create_edges(case_study_df[['related_chemical', '_id']], 'related_chemical', 'case_study_relevant_chemical')
+    case_study_chemical_edges = split_and_create_edges(case_study_df, 'related_chemical', 'case_study_relevant_chemical')
 
     # Create edges for related model systems
-    model_system_edges = split_and_create_edges(case_study_df[['related_model_system', '_id']], 'related_model_system', 'case_study_relevant_model_system')
+    model_system_edges = split_and_create_edges(case_study_df, 'related_model_system', 'case_study_relevant_model_system')
 
     # Create edges for related computational models
-    computational_model_edges = split_and_create_edges(case_study_df[['related_computational_model', '_id']], 'related_computational_model', 'case_study_relevant_computational_model')
+    computational_model_edges = split_and_create_edges(case_study_df, 'related_computational_model', 'case_study_relevant_computational_model')
 
     # Chemical-measured-with-bioassay
-    chemical_bioassay_edges = split_and_create_edges(chemical_df[['measured_with_bioassay', '_id']], 'measured_with_bioassay', 'chemical_measured_with_bioassay')
+    chemical_bioassay_edges = split_and_create_edges(chemical_df, 'measured_with_bioassay', 'chemical_measured_with_bioassay')
 
     # Bioassay-executed-on-model_system
-    bioassay_model_system_edges = split_and_create_edges(bioassay_df[['related_model_system', '_id']], 'related_model_system', 'bioassay_executed_on_model_system')
+    bioassay_model_system_edges = split_and_create_edges(bioassay_df, 'related_model_system', 'bioassay_executed_on_model_system')
 
     # Bioassay-related-organ
-    bioassay_organ_edges = split_and_create_edges(bioassay_df[['related_organ', '_id']], 'related_organ', 'bioassay_related_organ')
+    bioassay_organ_edges = split_and_create_edges(bioassay_df, 'related_organ', 'bioassay_related_organ')
 
     # Edge for chemical_relevant_to_computational_model
-    chemical_computational_model_edges = split_and_create_edges(chemical_df[['relevant_computational_model', '_id']], 'relevant_computational_model', 'chemical_relevant_to_computational_model')
+    chemical_computational_model_edges = split_and_create_edges(chemical_df, 'relevant_computational_model', 'chemical_relevant_to_computational_model')
 
     # Edge for chemical_measured_in_model_system
-    chemical_model_system_edges = split_and_create_edges(chemical_df[['measured_in_model_system', '_id']], 'measured_in_model_system', 'chemical_measured_in_model_system')
+    chemical_model_system_edges = split_and_create_edges(chemical_df, 'measured_in_model_system', 'chemical_measured_in_model_system')
 
     # Edge for model_system_relevant_to_organ
-    model_system_organ_edges = split_and_create_edges(model_system_df[['relevant_organ', '_id']], 'relevant_organ', 'model_system_relevant_to_organ')
+    model_system_organ_edges = split_and_create_edges(model_system_df, 'relevant_organ', 'model_system_relevant_to_organ')
 
     # Edge for computational_model_relevant_to_organ
-    computational_model_organ_edges = split_and_create_edges(computational_model_df[['relevant_organ', '_id']], 'relevant_organ', 'computational_model_relevant_to_organ')
+    computational_model_organ_edges = split_and_create_edges(computational_model_df, 'relevant_organ', 'computational_model_relevant_to_organ')
 
     # Edge for case_study_relevant_endpoint
-    case_study_endpoint_edges = split_and_create_edges(case_study_df[['related_endpoint', '_id']], 'related_endpoint', 'case_study_relevant_endpoint')
+    case_study_endpoint_edges = split_and_create_edges(case_study_df, 'related_endpoint', 'case_study_relevant_endpoint')
 
     # Edge for bioassay_used_with_experimental_condition
-    bioassay_condition_edges = split_and_create_edges(bioassay_df[['used_with_experimental_condition', '_id']], 'used_with_experimental_condition', 'bioassay_used_with_experimental_condition')
+    bioassay_condition_edges = split_and_create_edges(bioassay_df, 'used_with_experimental_condition', 'bioassay_used_with_experimental_condition')
 
     # Combine all edges into one DataFrame
     edges = pd.concat([
-        organ_edges, case_study_chemical_edges, model_system_edges, computational_model_edges, 
+        organ_edges, case_study_aop_edges, case_study_chemical_edges, model_system_edges, computational_model_edges, 
         chemical_bioassay_edges, bioassay_model_system_edges, bioassay_organ_edges, 
         chemical_computational_model_edges, chemical_model_system_edges, model_system_organ_edges, 
         computational_model_organ_edges, case_study_endpoint_edges, bioassay_condition_edges
     ], ignore_index=True)
 
     return edges
+
 
 
 def save_combined_csv():

@@ -195,7 +195,7 @@ class CustomAdapter:
 
         
 
-            logger.info(f"Yielding node: ID={_id}, Type={_type}, Properties={_props}")
+            #logger.info(f"Yielding node: ID={_id}, Type={_type}, Properties={_props}")
             node_count += 1
             yield (_id, _type, _props)
         
@@ -210,20 +210,30 @@ class CustomAdapter:
 
         edge_count = 0
         for index, row in self._edge_data.iterrows():
+            # Log the row to check if it has the expected edge data
+            logger.debug(f"Processing row: {row}")
+
             if row["_type"] not in self.edge_types:
-                logger.warning(f"Edge type {row['_type']} not in specified edge types.")
+                logger.warning(f"Edge type {row['_type']} not in specified edge types. Skipping.")
                 continue
 
             _id = None  # Edges don't necessarily need unique IDs
-            _start = row["_start"]
-            _end = row["_end"]
+            _start = str(row["_start"]) if pd.notna(row["_start"]) else None
+            _end = str(row["_end"]) if pd.notna(row["_end"]) else None
             _type = row["_type"]
             _props = {}
-            logger.info(f"Yielding edge: Start={_start}, End={_end}, Type={_type}, Properties={_props}")
+
+            if not _start or not _end:
+                logger.warning(f"Skipping edge due to missing start or end: Start={_start}, End={_end}, Type={_type}")
+                continue
+
+            #logger.info(f"Yielding edge: Start={_start}, End={_end}, Type={_type}, Properties={_props}")
             edge_count += 1
             yield (_id, _start, _end, _type, _props)
-        
+
         logger.info(f"Total edges generated: {edge_count}")
+
+
 
     def _set_types_and_fields(self, node_types, node_fields, edge_types, edge_fields):
         """
