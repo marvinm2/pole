@@ -231,7 +231,7 @@ bioassay used with experimental condition:
   is_a: association
   represented_as: edge
   source: bioassay
-  target: experimental_condition
+  target: experimental condition
   input_label: bioassay_used_with_experimental_condition
 
 chemical to web page association:
